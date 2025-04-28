@@ -15,12 +15,15 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  String? selectedValue = 'Colombo';
+  List<String> options = ['Colombo', 'Panadura', 'Kurunegala'];
+
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
-      String weatherLocation = 'panadura';
+      //String weatherLocation = 'panadura';
       final res = await http.get(
         Uri.parse(
-          'http://api.openweathermap.org/data/2.5/forecast?q=$weatherLocation&APPID=$openWeatherAPIKey',
+          'http://api.openweathermap.org/data/2.5/forecast?q=$selectedValue&APPID=$openWeatherAPIKey',
         ),
       );
 
@@ -49,7 +52,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             onPressed: () {
               setState(() {});
             },
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
           ),
         ],
       ),
@@ -57,7 +60,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         future: getCurrentWeather(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator.adaptive());
+            return const Center(child: CircularProgressIndicator.adaptive());
           }
           if (snapshot.hasError) {
             return Center(child: Text(snapshot.error.toString()));
@@ -92,9 +95,30 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
+                              DropdownButton<String>(
+                                value: selectedValue, // Current selected value
+                                hint: const Text(
+                                  "Panadura",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ), // Default text
+                                items:
+                                    options.map((String option) {
+                                      return DropdownMenuItem<String>(
+                                        value: option,
+                                        child: Text(option),
+                                      );
+                                    }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedValue =
+                                        newValue; // Update selected value
+                                  });
+                                },
+                                underline: const SizedBox.shrink(),
+                              ),
                               Text(
                                 '$currentTemp K',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -109,7 +133,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               const SizedBox(height: 16),
                               Text(
                                 currentSky,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 20,
                                   //fontWeight: FontWeight.bold,
                                 ),
@@ -151,7 +175,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Additional Informations',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),

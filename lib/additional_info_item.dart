@@ -16,12 +16,12 @@ class AdditionalInfoItem extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, size: 32),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(label),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           value,
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ],
     );
