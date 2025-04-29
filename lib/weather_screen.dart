@@ -23,7 +23,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       //String weatherLocation = 'panadura';
       final res = await http.get(
         Uri.parse(
-          'http://api.openweathermap.org/data/2.5/forecast?q=$selectedValue&APPID=$openWeatherAPIKey',
+          'https://api.openweathermap.org/data/2.5/forecast?q=$selectedValue&APPID=$openWeatherAPIKey',
         ),
       );
 
